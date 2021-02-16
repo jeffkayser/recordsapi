@@ -1,0 +1,2 @@
+B A ab@foo.net red 2001-02-03
+Y X x.y@bar.org blue 2010-01-31
