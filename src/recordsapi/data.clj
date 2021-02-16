@@ -1,7 +1,8 @@
 (ns recordsapi.data
   (:require [clojure.java.io :as io]
             [clojure.string :as s]
-            [clojure.data.csv :as csv]))
+            [clojure.data.csv :as csv])
+  (:import [java.time LocalDate] ))
 
 ; Input file field order
 (def fields [:last :first :email :color :birthdate])
@@ -21,6 +22,12 @@
     " " \space
     (throw (Exception. "Unknown record separator"))))
 
+(defn parse-cols
+  [cols]
+  (flatten [(map s/trim (butlast cols))
+            (-> cols last s/trim LocalDate/parse)])
+  )
+
 (defn read-file
   "Read CSV file from `path`, autodetecting the record separator"
   [path]
@@ -28,8 +35,10 @@
     (with-open [reader (io/reader path)]
       (doall
         ; Trim any spaces from each record
-        (map #(map s/trim %)
-             (csv/read-csv reader :separator (or sep \,)))))))
+        ;(map #(map s/trim %) (csv/read-csv reader :separator (or sep \,)))
+        (map parse-cols
+             (csv/read-csv reader :separator sep))
+        ))))
 
 (defn mapify
   "Convert records into a map matching the expected input spec"
