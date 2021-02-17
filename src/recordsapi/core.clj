@@ -2,40 +2,16 @@
   (:require [clojure.pprint :as pp]
             [clojure.string :as s]
             [recordsapi.cli :as cli]
-            [recordsapi.data :as data])
+            [recordsapi.data :as data :refer [db]])
   (:import [java.time.format DateTimeFormatter])
   (:gen-class))
 
 ; Output date format
 (def date-format (DateTimeFormatter/ofPattern "M/d/yyyy"))
 
-; Our record "database"; a vector of maps
-(defonce db (atom []))
-
-(defn add-record!
-  "Add record to 'database' atom"
-  [rec]
-  (swap! db conj rec))
-
-(defn load-data!
-  "Load data from path into 'database'"
-  [path]
-  (let [lines (data/read-data path)]
-    (doall
-      (map add-record! lines))))
 
 (defn run-server [port]
   (throw (Exception. "Not implemented yet")))
-
-
-(defn get-records
-  "Get records sorted by specified mode"
-  [view-mode]
-  (condp = view-mode
-    1 (sort-by :email #(compare %2 %1) (sort-by :last @db)) ; Email descending, then last name
-    2 (sort-by :birthdate @db)                              ; Birth date
-    3 (sort-by :last #(compare %2 %1) @db)                  ; Last name descending
-    (throw (Exception. (str "Invalid view option: '" view-mode "'")))))
 
 (defn format-record
   "Format record per specification"
@@ -65,8 +41,8 @@
     (when exit-message
       (cli/exit (if ok? 0 1) exit-message))
     (when (:file options)
-      (load-data! (:file options)))
+      (data/load-data! (:file options)))
     (if (:server options)
       (run-server (:port options))
-      (print-records (get-records (:view options))))))
+      (print-records (data/get-records (:view options))))))
   )
