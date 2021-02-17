@@ -1,6 +1,7 @@
-(ns recordsapi.core)
+(ns recordsapi.core
+  (:require [recordsapi.cli :as cli]
+            [recordsapi.data :as data])
+  (:gen-class))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn -main [& args]
+  )
