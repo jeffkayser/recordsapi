@@ -7,7 +7,7 @@
   [["-f" "--file INPUT" "Input file path"
     :parse-fn io/file
     :validate [#(.exists %) "File not found"]]
-   ["-v" "--view TYPE" "Output view (ignored in \"web server\" mode). Sorts by: 1=email descending (default), last name; 2=birth date; 3=last name descending"
+   ["-v" "--view TYPE" "Output view (ignored in \"web server\" mode). Sorts by: 1=email descending (default), last name; 2=birthdate; 3=last name descending"
     :parse-fn #(Integer/parseInt %)
     :validate [#(<= 1 % 3)]
     :default 1]

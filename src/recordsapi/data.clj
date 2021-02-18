@@ -65,7 +65,7 @@
   [view-mode]
   (condp = view-mode
     1 (sort-by :email #(compare %2 %1) (sort-by :last @db)) ; Email descending, then last name
-    2 (sort-by :birthdate @db)                              ; Birth date
+    2 (sort-by :birthdate @db)                              ; Birthdate
     3 (sort-by :last #(compare %2 %1) @db)                  ; Last name descending
     (throw (Exception. (str "Invalid view option: '" view-mode "'")))))
 
