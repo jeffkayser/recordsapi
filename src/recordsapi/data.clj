@@ -53,12 +53,16 @@
   [rec]
   (swap! db conj rec))
 
-(defn load-data!
+(defn load-data-from-string!
+  [str]
+  (doall
+    (map add-record!
+         (map mapify (parse-string str)))))
+
+(defn load-data-from-file!
   "Load data from path into 'database'"
   [path]
-  (let [lines (read-data path)]
-    (doall
-      (map add-record! lines))))
+  (load-data-from-string! (slurp path)))
 
 (defn get-records
   "Get records sorted by specified mode"
@@ -75,6 +79,10 @@
   (map mapify (parse-string (slurp (io/resource "data.csv"))))
   (parse-string (slurp (io/resource "data.psv")))
   (parse-string (slurp (io/resource "data.ssv")))
+
+  (def space "B A ab@foo.net red 2001-02-03\nY X x.y@bar.org blue 2010-01-31\n")
+  (load-data-from-string! space)
+  (load-data-from-file! (io/resource "data.csv"))
 
 
   )

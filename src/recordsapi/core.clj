@@ -41,7 +41,7 @@
     (when exit-message
       (cli/exit (if ok? 0 1) exit-message))
     (when (:file options)
-      (data/load-data! (:file options)))
+      (data/load-data-from-file! (:file options)))
     (if (:server options)
       (run-server (:port options))
       (print-records (data/get-records (:view options))))))
