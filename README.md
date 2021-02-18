@@ -33,7 +33,7 @@ Data to import must be text files with the following format:
 | ---       | ---        | ---           | ---            | ---        |
 | Smith     | Sarah      | s@hotmail.com | mauve          | 1980-08-22 |
 
-Record separators can be either `, ` (comma+space), ` | ` (space+pipe+space), or `" "` (space). The separator must be consistent throughout a given file.
+Record separators can be either "`, `" (comma+space), "` | `" (space+pipe+space), or "` `" (space). The separator must be consistent throughout a given file.
 
 Sample data in all supported formats is available in `./resources`:
 
