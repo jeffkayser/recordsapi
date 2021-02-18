@@ -37,7 +37,6 @@
 
 (defn -main [& args]
   (let [{:keys [options exit-message ok?]} (cli/validate-args args)]
-    (prn options)
     (when exit-message
       (cli/exit (if ok? 0 1) exit-message))
     (when (:file options)
