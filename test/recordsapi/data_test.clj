@@ -22,6 +22,11 @@
             :color     "green"
             :birthdate (LocalDate/of 1818 5 12)})
 
+(def pipe "B | A | ab@foo.net | red | 2001-02-03\r\nY | X | x.y@bar.org | blue | 2010-01-31\r\n")
+(def comma "B, A, ab@foo.net, red, 2001-02-03\nY, X, x.y@bar.org, blue, 2010-01-31")
+(def space "B A ab@foo.net red 2001-02-03\nY X x.y@bar.org blue 2010-01-31\n")
+
+
 (defn init-test-data [test-fn]
   (reset! data/db [bob foo frank])
   (test-fn))
@@ -60,13 +65,13 @@
     (is (= ["asdf" (LocalDate/of 1988 3 15)]
           (data/parse-cols [" asdf " " 1988-03-15"]))) ) )
 
-(deftest read-file
-  (testing "files read and parsed properly"
-    (let [expected [["B" "A" "ab@foo.net" "red" (LocalDate/of 2001 2 3)]
-                    ["Y" "X" "x.y@bar.org" "blue" (LocalDate/of 2010 1 31)]]]
-      (is (= expected (data/read-file (io/resource "test/pipe.txt"))))
-      (is (= expected (data/read-file (io/resource "test/comma.txt"))))
-      (is (= expected (data/read-file (io/resource "test/space.txt")))))))
+(deftest parse-string
+  (testing "input strings parsed properly")
+  (let [expected [["B" "A" "ab@foo.net" "red" (LocalDate/of 2001 2 3)]
+                  ["Y" "X" "x.y@bar.org" "blue" (LocalDate/of 2010 1 31)]]]
+    (is (= expected (data/parse-string pipe)))
+    (is (= expected (data/parse-string comma)))
+    (is (= expected (data/parse-string space)))))
 
 (deftest mapify
   (testing "creates map from fields/values"

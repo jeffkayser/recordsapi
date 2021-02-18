@@ -26,20 +26,17 @@
     (throw (Exception. "Unknown record separator"))))
 
 (defn parse-cols
+  "Parse string cols into desired storage data type"
   [cols]
   (flatten [(map s/trim (butlast cols))
             (-> cols last s/trim LocalDate/parse)]))
 
-(defn read-file
-  "Read CSV file from `path`, autodetecting the record separator"
-  [path]
-  (let [sep (-> path read-first-line detect-sep)]
-    (with-open [reader (io/reader path)]
-      (doall
-        ; Trim any spaces from each record
-        ;(map #(map s/trim %) (csv/read-csv reader :separator (or sep \,)))
-        (map parse-cols
-             (csv/read-csv reader :separator sep))))))
+(defn parse-string
+  "Parse input CSV from `str`, autodetecting the record separator"
+  [str]
+  (let [first-line (s/split str #"\r?\n" 2)
+        sep (-> first-line detect-sep)]
+    (map parse-cols (csv/read-csv str :separator sep))))
 
 (defn mapify
   "Convert records into a map matching the expected input spec"
@@ -49,7 +46,7 @@
 (defn read-data
   "Get fully parsed record maps from `path`"
   [path]
-  (map mapify (read-file path)))
+  (map mapify (parse-string (slurp path))))
 
 (defn add-record!
   "Add record to 'database' atom"
@@ -75,9 +72,9 @@
 
 (comment
 
-  (map mapify (read-file (io/resource "data.csv")))
-  (read-file (io/resource "data.psv"))
-  (read-file (io/resource "data.ssv"))
+  (map mapify (parse-string (slurp (io/resource "data.csv"))))
+  (parse-string (slurp (io/resource "data.psv")))
+  (parse-string (slurp (io/resource "data.ssv")))
 
 
   )
