@@ -66,7 +66,7 @@ As with the CLI, you may optionally load a file here via `--file`.
 | Get records sorted by birthdate | `curl http://localhost:3030/records/birthdate` |
 | Get records sorted by last name | `curl http://localhost:3030/records/name` |
 | Add a record (comma-separated values) | `curl -H 'Content-Type: application/json' -d 'line="foo, bar, foobar@example.com, red, 1973-03-22"' http://localhost:3030/records` |
-| Add a record (pipe-separated values) | `curl -H 'Content-Type: application/json' -d 'line="baz | quux | qb@example.com | jade | 1986-10-31"' http://localhost:3030/records` |
+| Add a record (pipe-separated values) | `curl -H 'Content-Type: application/json' -d 'line="baz \| quux \| qb@example.com \| jade \| 1986-10-31"' http://localhost:3030/records` |
 | Add a record (space-separated values) | `curl -H 'Content-Type: application/json' -d '{"line":"schmoe joe joe@me.com violet 1953-12-13"}' http://localhost:3030/records` |
 
 *Note*: [HTTPie](https://httpie.io/) is a more user-friendly CLI web client than cURL, and will display JSON/response codes in a more pleasing and informative way.
