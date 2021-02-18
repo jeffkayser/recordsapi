@@ -5,6 +5,11 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/data.csv "1.0.0"]
-                 [org.clojure/tools.cli "1.0.194"]]
+                 [org.clojure/tools.cli "1.0.194"]
+                 [compojure "1.6.2"]
+                 [metosin/jsonista "0.3.1"]
+                 [ring/ring-core "1.9.0"]
+                 [ring/ring-jetty-adapter "1.9.0"]]
   :repl-options {:init-ns recordsapi.core}
-  :main recordsapi.core)
+  :main recordsapi.core
+  :profiles {:dev {:dependencies [[ring/ring-mock "0.4.0"]]}})

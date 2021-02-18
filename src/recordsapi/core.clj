@@ -2,16 +2,13 @@
   (:require [clojure.pprint :as pp]
             [clojure.string :as s]
             [recordsapi.cli :as cli]
-            [recordsapi.data :as data :refer [db]])
+            [recordsapi.data :as data :refer [db]]
+            [recordsapi.web :as web])
   (:import [java.time.format DateTimeFormatter])
   (:gen-class))
 
 ; Output date format
 (def date-format (DateTimeFormatter/ofPattern "M/d/yyyy"))
-
-
-(defn run-server [port]
-  (throw (Exception. "Not implemented yet")))
 
 (defn format-record
   "Format record per specification"
@@ -42,6 +39,22 @@
     (when (:file options)
       (data/load-data-from-file! (:file options)))
     (if (:server options)
-      (run-server (:port options))
+      (web/start-server (:port options))
       (print-records (data/get-records (:view options))))))
+
+
+(comment
+
+  (load-data! (clojure.java.io/resource "data.csv"))
+  (count @db)
+  @db
+  (reset! db [])
+
+  (defn output-line [line]
+    (flatten [(butlast (vals line)) (.format (last (vals line)) date-format)])
+    )
+
+  (map (comp load-data! clojure.java.io/resource) ["data.csv" "data.psv" "data.ssv"])
+
+
   )
